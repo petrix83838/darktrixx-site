@@ -1,47 +1,181 @@
-import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input"; import { useState } from "react";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>PetrixBarato - Seguidores Fake</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; }
+    h1 { color: #2c3e50; }
+    label { display: block; margin: 1rem 0 0.3rem; }
+    input, button { padding: 0.5rem; width: 100%; font-size: 1rem; }
+    #painel { margin-top: 2rem; padding: 1rem; border: 1px solid #ccc; }
+    #msg, #error { margin-top: 1rem; }
+    #msg { color: green; }
+    #error { color: red; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
+  </style>
+</head>
+<body>
 
-export default function FollowerStore() { const [username, setUsername] = useState(""); const [quantity, setQuantity] = useState("");
+  <h1>PetrixBarato</h1>
 
-const handlePurchase = () => { alert(Pedido de ${quantity} seguidores para @${username} recebido!); };
-
-return ( <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6"> <h1 className="text-4xl font-bold mb-4">TrixFollowers 🚀</h1> <p className="mb-6 text-center max-w-md"> Compre seguidores para Instagram, TikTok ou qualquer rede social com segurança e rapidez. </p>
-
-<Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-gray-800">
-    <CardContent className="flex flex-col gap-4">
-      <Input
-        placeholder="@username ou link do perfil"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="bg-gray-700 border-none focus:ring-2 focus:ring-pink-500"
-      />
-
-      <Input
-        placeholder="Quantidade de seguidores"
-        type="number"
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-        className="bg-gray-700 border-none focus:ring-2 focus:ring-pink-500"
-      />
-
-      <Button onClick={handlePurchase} className="bg-pink-600 hover:bg-pink-700 rounded-2xl py-2">
-        Comprar Agora
-      </Button>
-    </CardContent>
-  </Card>
-
-  <div className="mt-8 grid grid-cols-1 gap-4 max-w-2xl">
-    <Card className="p-4 bg-gray-800 rounded-2xl shadow">
-      <CardContent>
-        <h2 className="text-xl font-semibold mb-2">Pacotes Populares</h2>
-        <ul className="list-disc ml-5 text-gray-300">
-          <li>100 Seguidores - R$5</li>
-          <li>500 Seguidores - R$20</li>
-          <li>1000 Seguidores - R$35</li>
-        </ul>
-      </CardContent>
-    </Card>
+  <div id="login-area">
+    <h2>Login</h2>
+    <label for="username">Usuário:</label>
+    <input id="username" type="text" />
+    <label for="password">Senha:</label>
+    <input id="password" type="password" />
+    <button onclick="login()">Entrar</button>
+    <div id="error"></div>
   </div>
-</div>
 
-); }
+  <div id="painel" style="display:none;">
+    <h2 id="bemvindo"></h2>
+    <p>Saldo atual: <span id="saldo">0</span></p>
 
+    <label for="quantidade">Quantidade para comprar:</label>
+    <input id="quantidade" type="number" min="1" />
+    <button onclick="comprar()">Comprar Seguidores</button>
+
+    <div id="msg"></div>
+    <button onclick="logout()" style="margin-top: 1rem;">Sair</button>
+
+    <h3>Pedidos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Quantidade</th>
+          <th>Status</th>
+          <th>Criado em</th>
+        </tr>
+      </thead>
+      <tbody id="lista-pedidos">
+      </tbody>
+    </table>
+  </div>
+
+<script>
+  const apiBase = 'http://localhost:3000'; // Ajuste para seu servidor
+
+  let loggedUser = null;
+
+  function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    clearMessages();
+
+    if (!username || !password) {
+      showError('Preencha usuário e senha.');
+      return;
+    }
+
+    fetch(apiBase + '/login', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ username, password })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Usuário ou senha inválidos');
+      return res.json();
+    })
+    .then(data => {
+      loggedUser = username;
+      document.getElementById('login-area').style.display = 'none';
+      document.getElementById('painel').style.display = 'block';
+      document.getElementById('bemvindo').textContent = 'Bem-vindo, ' + (username === 'PETRIX' ? 'Petrix' : username);
+      atualizarSaldo();
+      atualizarPedidos();
+      // Atualiza pedidos a cada 5 segundos
+      setInterval(atualizarPedidos, 5000);
+    })
+    .catch(err => showError(err.message));
+  }
+
+  function atualizarSaldo() {
+    fetch(apiBase + '/saldo?username=' + loggedUser)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('saldo').textContent = data.saldo;
+    });
+  }
+
+  function comprar() {
+    clearMessages();
+    const quantidade = parseInt(document.getElementById('quantidade').value);
+    if (!quantidade || quantidade <= 0) {
+      alert('Quantidade inválida');
+      return;
+    }
+
+    fetch(apiBase + '/comprar', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ username: loggedUser, quantidade })
+    })
+    .then(res => {
+      if (!res.ok) return res.json().then(j => Promise.reject(j.message));
+      return res.json();
+    })
+    .then(data => {
+      showMsg(data.message);
+      atualizarSaldo();
+      atualizarPedidos();
+      document.getElementById('quantidade').value = '';
+    })
+    .catch(err => alert('Erro: ' + err));
+  }
+
+  function atualizarPedidos() {
+    fetch(apiBase + '/pedidos?username=' + loggedUser)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.getElementById('lista-pedidos');
+      tbody.innerHTML = '';
+      if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">Nenhum pedido ainda</td></tr>';
+        return;
+      }
+      data.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.quantidade}</td>
+          <td>${p.status}</td>
+          <td>${new Date(p.criadoEm).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    });
+  }
+
+  function logout() {
+    loggedUser = null;
+    document.getElementById('login-area').style.display = 'block';
+    document.getElementById('painel').style.display = 'none';
+    clearMessages();
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+  }
+
+  function showMsg(msg) {
+    const el = document.getElementById('msg');
+    el.textContent = msg;
+    el.style.color = 'green';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error');
+    el.textContent = msg;
+    el.style.color = 'red';
+  }
+
+  function clearMessages() {
+    document.getElementById('msg').textContent = '';
+    document.getElementById('error').textContent = '';
+  }
+</script>
+
+</body>
+        </html>
