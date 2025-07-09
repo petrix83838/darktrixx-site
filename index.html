@@ -1,83 +1,47 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DarkTrixX - +18</title>
-    <style>
-        body {
-            background-color: #111;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            color: #e60000;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #ccc;
-            margin-bottom: 30px;
-        }
-        .videos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .video-card {
-            background-color: #222;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 10px #000;
-        }
-        .video-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-        .video-card a {
-            display: block;
-            padding: 10px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .video-card a:hover {
-            color: #e60000;
-        }
-    </style>
-</head>
-<body>
-    <h1>DarkTrixX 🔞</h1>
-    <p>PETRIX +18.</p>
+import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { Input } from "@/components/ui/input"; import { useState } from "react";
 
-    <div class="videos">
-        <div class="video-card">
-            <a href="https://www.xvideos.com/video.kcllofbe85a/compilacao_de_sexo_agressivo_negro_creampie_cowgirl_e_doggystyle_anal_riding_hardcore_enteada_sheisnovember_fodendo_o_seu_padrasto_grande_galo_em_buceta_preta_foda_peitos_mamilos_bunda_grande_tabu_sodomia" target="_blank">
-                <img src="https://via.placeholder.com/300x150.png?text=Vídeo+1+%2B18" alt="Video 1">
-                Vídeo 1
-            </a>
-        </div>
-        <div class="video-card">
-            <a href="https:https://www.xvideos.com/video.ohcalcd3323/meu_deus_deixei_meu_vizinho_infiel_foder_meu_cu_no_dia_dos_pais" target="_blank">
-                <img src="https://via.placeholder.com/300x150.png?text=Vídeo+2+%2B18" alt="Video 2">
-                Vídeo 2
-            </a>
-        </div>
-        <div class="video-card">
-            <a href="https:https://www.xvideos.com/video.ohvcmvm6b84/mano_eu_fodo_sua_vadia_ate_ela_nao_poder_andar_sortuda_com_cabeca_encaracolada_peitos_grandes_bunda_gorda_jovem_mulher_negra" target="_blank">
-                <img src="https://via.placeholder.com/300x150.png?text=Vídeo+3+%2B18" alt="Video 3">
-                Vídeo 3
-            </a>
-        </div>
-        <div class="video-card">
-            <a href="https://www.xvideos.com/video456789" target="_blank">
-                <img src="https://via.placeholder.com/300x150.png?text=Vídeo+4+%2B18" alt="Video 4">
-                Vídeo 4
-            </a>
-        </div>
-    </div>
-</body>
-</html>
+export default function FollowerStore() { const [username, setUsername] = useState(""); const [quantity, setQuantity] = useState("");
+
+const handlePurchase = () => { alert(Pedido de ${quantity} seguidores para @${username} recebido!); };
+
+return ( <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6"> <h1 className="text-4xl font-bold mb-4">TrixFollowers 🚀</h1> <p className="mb-6 text-center max-w-md"> Compre seguidores para Instagram, TikTok ou qualquer rede social com segurança e rapidez. </p>
+
+<Card className="w-full max-w-md p-6 rounded-2xl shadow-lg bg-gray-800">
+    <CardContent className="flex flex-col gap-4">
+      <Input
+        placeholder="@username ou link do perfil"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="bg-gray-700 border-none focus:ring-2 focus:ring-pink-500"
+      />
+
+      <Input
+        placeholder="Quantidade de seguidores"
+        type="number"
+        value={quantity}
+        onChange={(e) => setQuantity(e.target.value)}
+        className="bg-gray-700 border-none focus:ring-2 focus:ring-pink-500"
+      />
+
+      <Button onClick={handlePurchase} className="bg-pink-600 hover:bg-pink-700 rounded-2xl py-2">
+        Comprar Agora
+      </Button>
+    </CardContent>
+  </Card>
+
+  <div className="mt-8 grid grid-cols-1 gap-4 max-w-2xl">
+    <Card className="p-4 bg-gray-800 rounded-2xl shadow">
+      <CardContent>
+        <h2 className="text-xl font-semibold mb-2">Pacotes Populares</h2>
+        <ul className="list-disc ml-5 text-gray-300">
+          <li>100 Seguidores - R$5</li>
+          <li>500 Seguidores - R$20</li>
+          <li>1000 Seguidores - R$35</li>
+        </ul>
+      </CardContent>
+    </Card>
+  </div>
+</div>
+
+); }
+
