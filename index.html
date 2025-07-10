@@ -1,181 +1,91 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>PetrixBarato - Seguidores Fake</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajude um Cachorro 🐶</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; }
-    h1 { color: #2c3e50; }
-    label { display: block; margin: 1rem 0 0.3rem; }
-    input, button { padding: 0.5rem; width: 100%; font-size: 1rem; }
-    #painel { margin-top: 2rem; padding: 1rem; border: 1px solid #ccc; }
-    #msg, #error { margin-top: 1rem; }
-    #msg { color: green; }
-    #error { color: red; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background-color: #ff6f61;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+      border-bottom-left-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    .dog-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .dog-images img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .pix-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    .pix-box p {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .pix-box code {
+      display: block;
+      word-wrap: break-word;
+      background: #eee;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Ajude um Cachorro 🐶</h1>
+    <p>Faça uma doação e ajude a transformar vidas!</p>
+  </header>
+  <div class="container">
+    <div class="dog-images">
+      <img src="https://images.unsplash.com/photo-1601758123927-196f2ebd03f8?auto=format&fit=crop&w=600&q=80" alt="Cachorro 1">
+      <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=600&q=80" alt="Cachorro 2">
+      <img src="https://images.unsplash.com/photo-1577880216142-8549e9488dad?auto=format&fit=crop&w=600&q=80" alt="Cachorro 3">
+      <img src="https://images.unsplash.com/photo-1608534508986-a03c1be3c3d2?auto=format&fit=crop&w=600&q=80" alt="Cachorro 4">
+    </div><div class="pix-box">
+  <p><strong>Chave Pix para Doação:</strong></p>
+  <code>00020101021126580014br.gov.bcb.pix01365dac3e1d-5e22-4c5b-8c16-4d5f97eb03815204000053039865802BR5916GABRIEL H MATIAS6013PRESIDENTE BE62070503***6304F11E</code>
+</div>
 
-  <h1>PetrixBarato</h1>
-
-  <div id="login-area">
-    <h2>Login</h2>
-    <label for="username">Usuário:</label>
-    <input id="username" type="text" />
-    <label for="password">Senha:</label>
-    <input id="password" type="password" />
-    <button onclick="login()">Entrar</button>
-    <div id="error"></div>
   </div>
-
-  <div id="painel" style="display:none;">
-    <h2 id="bemvindo"></h2>
-    <p>Saldo atual: <span id="saldo">0</span></p>
-
-    <label for="quantidade">Quantidade para comprar:</label>
-    <input id="quantidade" type="number" min="1" />
-    <button onclick="comprar()">Comprar Seguidores</button>
-
-    <div id="msg"></div>
-    <button onclick="logout()" style="margin-top: 1rem;">Sair</button>
-
-    <h3>Pedidos</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Quantidade</th>
-          <th>Status</th>
-          <th>Criado em</th>
-        </tr>
-      </thead>
-      <tbody id="lista-pedidos">
-      </tbody>
-    </table>
-  </div>
-
-<script>
-  const apiBase = 'http://localhost:3000'; // Ajuste para seu servidor
-
-  let loggedUser = null;
-
-  function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    clearMessages();
-
-    if (!username || !password) {
-      showError('Preencha usuário e senha.');
-      return;
-    }
-
-    fetch(apiBase + '/login', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ username, password })
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Usuário ou senha inválidos');
-      return res.json();
-    })
-    .then(data => {
-      loggedUser = username;
-      document.getElementById('login-area').style.display = 'none';
-      document.getElementById('painel').style.display = 'block';
-      document.getElementById('bemvindo').textContent = 'Bem-vindo, ' + (username === 'PETRIX' ? 'Petrix' : username);
-      atualizarSaldo();
-      atualizarPedidos();
-      // Atualiza pedidos a cada 5 segundos
-      setInterval(atualizarPedidos, 5000);
-    })
-    .catch(err => showError(err.message));
-  }
-
-  function atualizarSaldo() {
-    fetch(apiBase + '/saldo?username=' + loggedUser)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('saldo').textContent = data.saldo;
-    });
-  }
-
-  function comprar() {
-    clearMessages();
-    const quantidade = parseInt(document.getElementById('quantidade').value);
-    if (!quantidade || quantidade <= 0) {
-      alert('Quantidade inválida');
-      return;
-    }
-
-    fetch(apiBase + '/comprar', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ username: loggedUser, quantidade })
-    })
-    .then(res => {
-      if (!res.ok) return res.json().then(j => Promise.reject(j.message));
-      return res.json();
-    })
-    .then(data => {
-      showMsg(data.message);
-      atualizarSaldo();
-      atualizarPedidos();
-      document.getElementById('quantidade').value = '';
-    })
-    .catch(err => alert('Erro: ' + err));
-  }
-
-  function atualizarPedidos() {
-    fetch(apiBase + '/pedidos?username=' + loggedUser)
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.getElementById('lista-pedidos');
-      tbody.innerHTML = '';
-      if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4">Nenhum pedido ainda</td></tr>';
-        return;
-      }
-      data.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${p.id}</td>
-          <td>${p.quantidade}</td>
-          <td>${p.status}</td>
-          <td>${new Date(p.criadoEm).toLocaleString()}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    });
-  }
-
-  function logout() {
-    loggedUser = null;
-    document.getElementById('login-area').style.display = 'block';
-    document.getElementById('painel').style.display = 'none';
-    clearMessages();
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-  }
-
-  function showMsg(msg) {
-    const el = document.getElementById('msg');
-    el.textContent = msg;
-    el.style.color = 'green';
-  }
-
-  function showError(msg) {
-    const el = document.getElementById('error');
-    el.textContent = msg;
-    el.style.color = 'red';
-  }
-
-  function clearMessages() {
-    document.getElementById('msg').textContent = '';
-    document.getElementById('error').textContent = '';
-  }
-</script>
-
+  <footer>
+    &copy; 2025 Gabriel H Matias. Todos os direitos reservados.
+  </footer>
 </body>
-        </html>
+</html>
