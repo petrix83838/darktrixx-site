@@ -1,51 +1,92 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ajude Meu Cachorro 🐶🤍</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      color: #333;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #444;
-      margin-top: 20px;
-    }
-    p {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-    .pix {
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      display: inline-block;
-      margin-top: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      word-wrap: break-word;
-      max-width: 90%;
-    }
-    img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajude o Snoop 🐾</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #444;
+        }
+        img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 15px;
+            margin-top: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .pix-box {
+            background: #fff;
+            padding: 15px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            word-wrap: break-word;
+            font-size: 12px;
+        }
+        .pix-key {
+            font-size: 11px;
+            word-break: break-all;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .copy-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+        .thank-you {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-  <h1>Peço sua ajuda para comprar medicamentos para meu cachorro que está doente 🤍</h1>
-  <img src="https://i.imgur.com/YOUR_IMAGE_LINK.jpg" alt="Cachorro doente">
-  <p>Qualquer valor já ajuda muito 🙏🏽😔</p>
-  <p>Link para doação abaixo 👇</p>  <div class="pix">
-    <strong>Chave Pix:</strong><br>
-    00020101021126580014br.gov.bcb.pix01365dac3e1d-5e22-4c5b-8c16-4d5f97eb03815204000053039865802BR5916GABRIEL H MATIAS6013PRESIDENTE BE62070503***6304F11E
-  </div>  <p style="margin-top: 30px; font-weight: bold;">Obrigado quem puder ajudar 🙏🏽</p>
-  <p>Deus abençoe esses corações bons que ainda existem 🤍🫠</p>
+
+    <h1>Peço sua ajuda para comprar medicamentos para meu cachorro Snoop 🐶❤️</h1>
+    
+    <img src="https://i.imgur.com/qQjH04M.jpg" alt="Cachorro Snoop Doente">
+
+    <p>Qualquer valor já ajuda muito 🙏😔</p>
+    <p>Link para doação abaixo 👇</p>
+
+    <div class="pix-box">
+        <strong>Chave Pix:</strong><br>
+        <div class="pix-key" id="pixKey">
+            00020101021126580014br.gov.bcb.pix01365dac3e1d-5e22-4c5b-8c16-4d5f97eb03815204000053039865802BR5916GABRIEL H MATIAS6013PRESIDENTE BE62070503***6304F11E
+        </div>
+        <button class="copy-button" onclick="copiarPix()">Copiar Chave Pix</button>
+    </div>
+
+    <p class="thank-you">Obrigado quem puder ajudar 🙏<br>Deus abençoe esses corações bons que ainda existem 🤍🌻</p>
+
+    <script>
+        function copiarPix() {
+            const chavePix = document.getElementById('pixKey').innerText;
+            navigator.clipboard.writeText(chavePix).then(function() {
+                alert('Chave Pix copiada com sucesso! 🙌');
+            }, function(err) {
+                alert('Erro ao copiar a chave Pix.');
+            });
+        }
+    </script>
+
 </body>
 </html>
